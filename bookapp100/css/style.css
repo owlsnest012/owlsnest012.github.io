@@ -1,0 +1,1243 @@
+/* ====================================================
+   基本設定
+   ==================================================== */
+
+   * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  :root,
+  [data-theme="default"] {
+  
+    /* ==================================================
+       基準作品
+       ================================================== */
+  
+    --design-width: 1300px;
+    --design-height: 970px;
+  
+  
+    /* ==================================================
+       HEADER
+       ================================================== */
+  
+    --header-height: 110px;
+  
+  
+    /* ==================================================
+       MAIN AREA
+       ================================================== */
+  
+    --main-width: 1300px;
+    --main-height: 860px;
+  
+  
+    /* ==================================================
+       LAYOUT SPACE
+       ================================================== */
+  
+    --layout-width: 1230px;
+    --layout-height: 800px;
+  
+  
+    /* ==================================================
+       BOOKSHELF
+       ================================================== */
+  
+    --bookshelf-width: 930px;
+    --bookshelf-height: 800px;
+  
+    --bookshelf-columns: 25;
+    --bookshelf-rows: 4;
+  
+  
+    /* ---------- 本同士の間隔 ---------- */
+  
+    --book-column-gap: 4px;
+    --book-row-gap: 10px;
+  
+  
+    /* ==================================================
+       DETAIL VIEW
+       ================================================== */
+  
+    --detail-width: 300px;
+    --detail-height: 800px;
+  
+    --detail-position:
+      calc(
+        (
+          var(--bookshelf-width)
+          - (24 * var(--book-column-gap))
+        ) / 25 * 8
+        + (7 * var(--book-column-gap))
+      );
+  
+  
+    /* ==================================================
+       COLORS
+       ================================================== */
+  
+    --color-unread: #9A9891;
+    --color-reading: #E0BDA9;
+    --color-read: #DF725A;
+    --color-accent: #DF725A;
+  
+    --main-background: #f7f6f2;
+    --list-background: #fff;
+  
+    --text: #333;
+    --subtext: #666;
+  }
+  
+  
+  /* ====================================================
+     BODY
+     ==================================================== */
+  
+  body {
+    background-color: var(--main-background);
+  
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      "SF Pro Text",
+      "Helvetica Neue",
+      sans-serif;
+  
+    color: var(--text);
+  
+    min-height: 100vh;
+  
+    overflow: hidden;
+  
+    user-select: none;
+  }
+  
+  
+  /* ====================================================
+     1. HEADER
+     ==================================================== */
+
+  .header {
+    width: var(--design-width);
+    height: var(--header-height);
+  
+    margin: 0 auto;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    position: relative;
+    top: 15px;
+  }
+  
+  
+  /* ====================================================
+     HEADER LEFT
+     ==================================================== */
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  /* ---------- リスト選択 ---------- */
+  
+  .list-select {
+    border: none;
+  
+    background: transparent;
+  
+    font-size: 38px;
+    font-weight: 800;
+  
+    color: var(--text);
+  
+    font-family: inherit;
+  
+    cursor: pointer;
+  
+    outline: none;
+  }
+  
+  
+  /* ====================================================
+     HEADER RIGHT
+     ==================================================== */
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+  
+    gap: 16px;
+  }
+  
+  
+  /* ====================================================
+     HEADER BUTTON
+     ==================================================== */
+  
+  .header-btn {
+    background: none;
+    border: none;
+  
+    padding: 4px 8px;
+  
+    font-size: 30px;
+    font-weight: 800;
+  
+    letter-spacing: 0.5px;
+  
+    color: var(--text);
+  
+    cursor: pointer;
+  
+    transition: opacity 0.2s;
+  }
+  
+  .header-btn:hover {
+    opacity: 0.6;
+  }
+
+  #language-btn:hover {
+    opacity: 1;
+  }
+
+  /* ---------- 選択中の言語 ---------- */
+  
+  .language-active {
+    color: var(--color-accent);
+  }  
+
+  /* ====================================================
+     SORT
+     ==================================================== */
+  
+  .dropdown-wrapper {
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+  
+    top: 100%;
+    right: 0;
+  
+    margin-top: 6px;
+  
+    min-width: 110px;
+  
+    background: #fff;
+  
+    border: 1.5px solid var(--text);
+  
+    border-radius: 6px;
+  
+    display: flex;
+    flex-direction: column;
+  
+    z-index: 100;
+  
+    overflow: hidden;
+  }
+  
+  .dropdown-menu.hidden {
+    display: none;
+  }
+  
+  .sort-option {
+    background: none;
+    border: none;
+  
+    padding: 10px 14px;
+  
+    font-size: 20px;
+    font-weight: 700;
+  
+    text-align: left;
+  
+    color: var(--text);
+  
+    cursor: pointer;
+  }
+  
+  .sort-option:hover {
+    background-color: #f0f0f0;
+  }
+  
+  
+  /* ====================================================
+     MODE TOGGLE
+     ==================================================== */
+  
+  .mode-toggle-btn {
+    background: none;
+    border: none;
+  
+    padding: 0 4px;
+  
+    cursor: pointer;
+  
+    transition: transform 0.2s;
+  }
+  
+  .mode-toggle-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  .book-icon {
+    width: 40px;
+    height: 40px;
+  }  
+  
+  /* ====================================================
+     2. MAIN AREA
+     ==================================================== */
+  
+  .main-container {
+    position: relative;
+  
+    width: var(--main-width);
+    height: var(--main-height);
+  
+    margin: 0 auto;
+  
+    overflow: hidden;
+  
+    background-color: var(--main-background);
+  
+    border-radius: 8px;
+  }
+  
+  
+  /* ====================================================
+     3. LAYOUT SPACE
+     ==================================================== */
+  
+  /*
+     本棚と詳細ビューを配置するための
+     独立した座標空間。
+  
+     サイズ：
+     1230 × 800px
+  
+     x = 0 を本棚の基準位置とする。
+  
+  
+     閲覧モード：
+  
+     ┌──────────────────────────────────────┐
+     │              BOOKSHELF               │
+     └──────────────────────────────────────┘
+  
+  
+     操作モード：
+  
+     ┌────────────┬──────────┬──────────────┐
+     │  BOOKSHELF │  DETAIL  │  BOOKSHELF   │
+     │    1～8    │   VIEW   │    9～25     │
+     └────────────┴──────────┴──────────────┘
+  */
+
+  .layout-space {
+    position: absolute;
+  
+    left: 50%;
+    top: 51%;
+  
+    width: var(--layout-width);
+    height: var(--layout-height);
+  
+    transform:
+      translate(-50%, calc(-50% - 20px));
+  }
+  
+  
+  /* ====================================================
+     4. BOOKSHELF WINDOWS
+     ==================================================== */
+  
+  /*
+     bookshelf-window は
+     「本棚を見る窓」。
+  
+     本棚そのものの幅は常に固定。
+  
+     窓の幅だけを変えることで、
+  
+     閲覧モード：
+     本棚全体
+  
+     操作モード：
+     左右に分割
+  
+     を実現する。
+  */
+  
+  .bookshelf-window {
+    position: absolute;
+  
+    top: 0;
+  
+    height: var(--bookshelf-height);
+  
+    overflow: hidden;
+  }
+  
+  
+  /* ====================================================
+     LEFT WINDOW
+     ==================================================== */
+  
+  /*
+     本棚のx=0から表示する窓。
+  */
+  
+  .left-window {
+    left: 0;
+  
+    width: var(--bookshelf-width);
+  }
+  
+  
+  /* ====================================================
+     RIGHT WINDOW
+     ==================================================== */
+  
+  /*
+     詳細ビューの右端から開始。
+  
+     x =
+     detail-position
+     + detail-width
+  */
+  
+  .right-window {
+    left:
+      calc(
+        var(--detail-position)
+        + var(--detail-width)
+      );
+  
+    width:
+      calc(
+        var(--bookshelf-width)
+        - var(--detail-position)
+      );
+  }
+  
+  
+  /* ====================================================
+     5. BOOKSHELF
+     ==================================================== */
+  
+  /*
+     本棚そのもの。
+  
+     25列 × 4行。
+  */
+  
+  .bookshelf {
+    position: absolute;
+  
+    top: 0;
+  
+    width: var(--bookshelf-width);
+    height: var(--bookshelf-height);
+  
+    display: grid;
+  
+    grid-template-columns: repeat(25, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  
+    column-gap: var(--book-column-gap);
+    row-gap: 0;
+  }
+  
+  /* ====================================================
+     LEFT BOOKSHELF
+     ==================================================== */
+  
+  .left-window .bookshelf {
+    left: 0;
+  }
+  
+  
+  /* ====================================================
+     RIGHT BOOKSHELF
+     ==================================================== */
+  
+  /*
+     左側と同じ本棚を
+     detail-position 分だけ左へ移動。
+  
+     これによって、
+  
+     左側：
+     本棚 x=0～detail-position
+  
+     右側：
+     本棚 x=detail-position～1230
+  
+     が表示される。
+  */
+  
+  .right-window .bookshelf {
+    left:
+      calc(
+        var(--detail-position) * -1
+      );
+  }
+  
+  
+  /* ====================================================
+     6. BOOK
+     ==================================================== */
+  
+  .book {
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    writing-mode: vertical-rl;
+  
+    text-orientation: mixed;
+  
+    font-size: 11px;
+    font-weight: 600;
+  
+    color: #fff;
+  
+    align-self: end;
+  
+    padding: 4px 0;
+  
+    overflow: hidden;
+  
+    white-space: nowrap;
+  
+    transition:
+      transform 0.15s,
+      opacity 0.15s,
+      background-color 0.2s;
+  }
+
+
+  /* ====================================================
+   BOOK TITLE
+   ==================================================== */
+  .book-title {
+    display: block;
+
+    white-space: nowrap;
+
+    font-size: 11px;
+
+    /* Flexboxによる縮小を防ぐ */
+    flex: 0 0 auto;
+
+    /* 本の上下に余白を設ける */
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+
+
+  /* ---------- 2列表示 ---------- */
+
+  .book-title.multicolumn {
+    white-space: normal;
+
+    overflow: hidden;
+
+    text-align: center;
+  }
+  
+  /* ====================================================
+     7. VIEW MODE
+     ==================================================== */
+  
+  /*
+     閲覧モードでは
+  
+     LEFT WINDOW
+     └── BOOKSHELF
+  
+     のみ表示する。
+  
+     本棚全体が見える。
+  */
+  
+  
+  .main-container.view-mode .detail-panel,
+  .main-container.view-mode .right-window {
+    display: none;
+  }
+  
+  
+  /*
+     左窓を本棚全体の幅にする。
+  */
+  
+  .main-container.view-mode .left-window {
+    width: var(--bookshelf-width);
+  }
+  
+  
+  /*
+     閲覧モードでは本を操作しない。
+  */
+  
+  .main-container.view-mode .book {
+    pointer-events: none;
+  }
+  
+  
+  /* ====================================================
+     8. EDIT MODE
+     ==================================================== */
+  
+  /*
+     操作モード：
+  
+     x = 0
+     ├───────────────┤
+         左本棚
+     0～detail-position
+  
+     x = detail-position
+     ├────────────────────┤
+            詳細ビュー
+     detail-position
+     ～ detail-position + 300
+  
+     x = detail-position + 300
+     ├──────────────────────────────┤
+                  右本棚
+  */
+  
+  .main-container.edit-mode .left-window {
+    width: var(--detail-position);
+  }
+  
+  .main-container.edit-mode .right-window {
+    display: block;
+  }
+  
+  .main-container.edit-mode .detail-panel {
+    display: flex;
+  }
+  
+  .main-container.edit-mode .book {
+    cursor: pointer;
+  }
+  
+  .main-container.edit-mode .book:hover {
+    transform:
+      translateY(-4px)
+      scale(1.05);
+  }
+  
+  
+  /* ====================================================
+     9. BOOK STATUS COLORS
+     ==================================================== */
+  
+  .book.unread {
+    background-color: var(--color-unread);
+  }
+  
+  .book.reading {
+    background-color: var(--color-reading);
+  }
+  
+  .book.read {
+    background-color: var(--color-read);
+  }
+  
+  
+  /* ====================================================
+     10. DETAIL PANEL
+     ==================================================== */
+  
+  .detail-panel {
+    position: absolute;
+  
+    left: var(--detail-position);
+    top: 0;
+  
+    width: var(--detail-width);
+    height: var(--detail-height);
+  
+    padding: 20px;
+  
+    background-color: var(--main-background);
+  
+    border-radius: 6px;
+  
+    display: flex;
+  
+    flex-direction: column;
+  
+    gap: 16px;
+  
+    z-index: 10;
+  
+    opacity: 1;
+  
+    transition:
+      opacity 0.4s ease;
+  }
+  
+  
+  /* ---------- 非表示 ---------- */
+  
+  .detail-panel.hidden {
+    display: none;
+  }
+  
+  
+  /* ====================================================
+     11. STATUS + RATING
+     ==================================================== */
+  
+  .status-rating {
+    display: flex;
+  
+    flex-direction: row;
+  
+    align-items: center;
+  
+    justify-content: center;
+  
+    gap: 16px;
+  }
+  
+  
+  /* ====================================================
+     DETAIL BOOK ICON
+     ==================================================== */
+  
+  .detail-book-icon {
+    width: 200px;
+    height: 250px;
+    
+    border: none;
+    position: relative;  
+    background: transparent;    
+    overflow: hidden;
+    
+    font-size: 14px;
+    font-weight: 700;
+  
+    writing-mode: horizontal-tb;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    cursor: pointer;
+
+    transition:
+    transform 0.1s;
+
+  }
+  
+  .detail-book-icon:active {
+    transform: scale(0.97);
+  }
+  
+  .detail-book-image {
+    position: absolute;
+  
+    inset: 0;
+  
+    -webkit-mask-image:
+      url("../images/detail-book2.png");
+  
+    mask-image:
+      url("../images/detail-book2.png");
+  
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  
+    -webkit-mask-position: center;
+    mask-position: center;
+
+    transition:
+    background-color 0.2s,
+
+  }
+
+  #detail-book-title {
+    font-size: 15px;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+  
+    width: 160px;
+    text-align: center;
+  
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+  
+  /* ---------- 本アイコンの状態 ---------- */
+  
+  .detail-book-icon.unread
+  .detail-book-image {
+    background-color: var(--color-unread);
+  }
+  
+  .detail-book-icon.read
+  .detail-book-image {
+    background-color: var(--color-read);
+  }
+  
+  .detail-book-icon.reading
+  .detail-book-image {
+    background-color: var(--color-reading);
+  }
+  
+  /* ====================================================
+     12. RATING
+     ==================================================== */
+  
+  .rating-control {
+    display: flex;
+  
+    flex-direction: column-reverse;
+  
+    justify-content: flex-start;
+  
+    gap: 2px;
+  }
+  
+  
+  .rating-star {
+    width: 28px;
+    height: 28px;
+  
+    padding: 0;
+  
+    background: none;
+  
+    border: none;
+  
+    font-size: 23px;
+  
+    line-height: 1;
+  
+    color: #ccc;
+  
+    cursor: pointer;
+  
+    transition:
+      color 0.15s,
+      transform 0.1s;
+  }
+  
+  .rating-star.active {
+    color: var(--color-accent);
+  }
+  
+  .rating-star:active {
+    transform: scale(0.9);
+  }
+  
+  
+  /* ====================================================
+     13. BOOK INFORMATION
+     ==================================================== */
+  
+  .panel-info {
+    display: flex;
+  
+    flex-direction: column;
+  
+    gap: 8px;
+  
+    flex-grow: 1;
+  }
+  
+  .book-detail-title {
+    font-size: 40px;
+    font-weight: 800;
+  	overflow-wrap: break-word;
+	  word-break: normal;
+  }
+  
+  .book-detail-author {
+    font-size: 25px;
+    overflow-wrap: break-word;
+    word-break: normal;
+    color: var(--subtext);
+  }
+  
+  
+  /* ====================================================
+     MEMO
+     ==================================================== */
+  
+  .memo-box {
+    display: flex;
+  
+    flex-direction: column;
+  
+    gap: 4px;
+  
+    margin-top: 8px;
+  
+    flex-grow: 1;
+  }
+  
+  .memo-box label {
+    font-size: 15px;
+  
+    font-weight: 800;
+  
+    color: #888;
+  }
+  
+  .memo-box textarea {
+    width: 100%;
+    height: 100%;
+  
+    min-height: 100px;
+  
+    border: 1px solid #ccc;
+  
+    border-radius: 4px;
+  
+    padding: 8px;
+  
+    background-color: #fff;
+  
+    font-family: inherit;
+  
+    font-size: 15px;
+  
+    resize: none;
+  }
+  
+  
+  /* ====================================================
+     14. READ COUNT
+     ==================================================== */
+  
+  .footer-count {
+    position: fixed;
+  
+    bottom: 32px;
+    right: 32px;
+  
+    font-size: 36px;
+  
+    font-weight: 900;
+  
+    color: var(--color-accent);
+  
+    line-height: 1;
+  
+    pointer-events: none;
+  }
+  
+  .footer-count .total {
+    font-size: 36px;
+  
+    color: #666;
+  
+    font-weight: 700;
+  }
+  
+  
+  /* ====================================================
+     15. THEMES
+     ==================================================== */
+  
+  [data-theme="green"] {
+    --color-unread: #A79D95;
+    --color-reading: #A7C28F;
+    --color-read: #7FA65C;
+    --color-accent: #7FA65C;
+  }
+  
+  [data-theme="blue"] {
+    --color-unread: #95a5a6;
+    --color-reading: #7BA0D8;
+    --color-read: #496B9E;
+    --color-accent: #496B9E;
+  }
+
+
+/* ====================================================
+   APP SCALE CONTAINER
+   ==================================================== */
+   .app {
+    position: fixed;
+    width: 1440px;
+    height: 1018px;
+    left: 50%;
+    top: 50%;
+    transform-origin: center center;
+  }
+
+/* ====================================================
+   LIST PANEL BUTTON
+   ==================================================== */
+
+.list-panel-btn {
+  width: 100%;
+  height: 50px;
+  flex: 0 0 50px;
+
+  appearance: none;
+  -webkit-appearance: none;  
+  background: transparent;
+  
+  border: none;
+  color: var(--text);
+
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-align: right;
+  padding-right: 20px;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.15s,
+    transform 0.1s;
+}
+
+.list-panel-btn:hover {
+  opacity: 0.75;
+}
+
+.list-panel-btn:active {
+  transform: scale(0.99);
+}
+
+
+/* ====================================================
+   LIST PANEL
+   ==================================================== */
+
+.list-panel {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: #fff;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  z-index: 5;
+
+  user-select: none;
+}
+
+.list-panel.hidden {
+  display: none;
+}
+
+
+/* ---------- 一冊分 ---------- */
+
+.list-panel-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 170px;
+  align-items: center;
+
+  min-height: 72px;
+  padding: 10px 18px;
+
+  border-bottom: 1px solid #ddd;
+}
+
+
+/* ---------- status ---------- */
+
+.list-panel-status {
+  position: relative;
+
+  width: 26px;
+  height: 26px;
+
+  padding: 0;
+
+  border: 2px solid #888;
+  border-radius: 2px;
+
+  background: #fff;
+
+  cursor: pointer;
+}
+
+.list-panel-status::before,
+.list-panel-status::after {
+  content: "";
+  position: absolute;
+  display: none;
+
+  left: 50%;
+  top: 50%;
+
+  width: 3px;
+  height: 21px;
+
+  background: currentColor;
+  border-radius: 2px;
+
+  transform-origin: center;
+}
+
+/* 既読：× */
+.list-panel-status.read {
+  color: var(--color-read);
+  border-color: var(--color-read);
+}
+
+.list-panel-status.read::before,
+.list-panel-status.read::after {
+  display: block;
+}
+
+.list-panel-status.read::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.list-panel-status.read::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* 読書中：／ */
+.list-panel-status.reading {
+  color: var(--color-reading);
+  border-color: var(--color-reading);
+}
+
+.list-panel-status.reading::before {
+  display: block;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+
+/* ---------- title + author ---------- */
+
+.list-panel-book-info {
+  min-width: 0;
+  padding: 2px 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+
+  border: none;
+  background: none;
+
+  font-family: inherit;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.list-panel-book-info:hover .list-panel-book-title {
+  opacity: 0.6;
+}
+
+.list-panel-book-title,
+.list-panel-book-author {
+  display: block;
+  max-width: 100%;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.list-panel-book-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.list-panel-book-author {
+  font-size: 13px;
+  color: var(--subtext);
+}
+
+
+/* ---------- rating ---------- */
+
+.list-panel-rating {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1px;
+}
+
+.list-panel-star {
+  width: 28px;
+  height: 28px;
+
+  padding: 0;
+
+  border: none;
+  background: none;
+
+  font-family: inherit;
+  font-size: 21px;
+  line-height: 1;
+
+  color: #ccc;
+  cursor: pointer;
+
+  transition:
+    color 0.15s,
+    transform 0.1s;
+}
+
+.list-panel-star.active {
+  color: var(--color-accent);
+}
+
+.list-panel-star:active {
+  transform: scale(0.9);
+}
+
+
+/* ====================================================
+   DETAIL PANEL / LIST PANEL LAYOUT
+   ==================================================== */
+
+.detail-panel {
+  padding: 10px 20px;
+  gap: 0;
+}
+
+.detail-panel .status-rating {
+  flex: 0 0 250px;
+  height: 250px;
+}
+
+.detail-panel .panel-info {
+  flex: 0 0 480px;
+  min-height: 0;
+}
